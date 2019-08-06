@@ -2,7 +2,9 @@
 
 Widget created as a React app for showing weather by [FMI](https://ilmatieteenlaitos.fi/) in Finland.
 
-Uses Node 10 and Typescript.
+Built with Node 10 and Typescript.
+
+Uses [MetOLib](https://github.com/fmidev/metolib) for requesting and parsing the weather data.
 
 **NOTE: work in progress!**
 

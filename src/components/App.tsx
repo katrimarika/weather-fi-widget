@@ -1,7 +1,8 @@
 /** @jsx jsx */
 import { css, Global, jsx } from '@emotion/core';
+import { ForecastCompact } from 'components/ForecastCompact';
 import { FC, Fragment } from 'react';
-import { theme } from 'theme';
+import { theme } from 'utils/theme';
 
 export const App: FC = () => {
   const noBackground = window.location.search.includes('noBg');
@@ -31,7 +32,7 @@ export const App: FC = () => {
           }
         `}
       />
-      Content
+      <ForecastCompact site="Helsinki" />
     </Fragment>
   );
 };
