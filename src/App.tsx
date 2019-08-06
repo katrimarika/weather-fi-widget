@@ -1,26 +1,37 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+/** @jsx jsx */
+import { css, Global, jsx } from '@emotion/core';
+import { FC, Fragment } from 'react';
+import { theme } from 'theme';
 
-const App: React.FC = () => {
+export const App: FC = () => {
+  const noBackground = window.location.search.includes('noBg');
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <Fragment>
+      <Global
+        styles={css`
+          @import url('https://fonts.googleapis.com/css?family=Roboto:400,700');
+          * {
+            box-sizing: border-box;
+          }
+          html {
+            font-size: '1.57vw';
+          }
+          body {
+            margin: 0;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+            -webkit-overflow-scrolling: touch;
+            background: ${noBackground
+              ? theme.colors.transparent
+              : theme.colors.black};
+            color: ${theme.colors.white};
+            font-family: ${theme.fonts.body};
+            position: relative;
+          }
+        `}
+      />
+      Content
+    </Fragment>
   );
-}
-
-export default App;
+};
