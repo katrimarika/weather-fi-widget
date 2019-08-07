@@ -4,7 +4,7 @@ import { FC } from 'react';
 import { useForecastData } from 'utils/hooks';
 
 export const ForecastCompact: FC<{ site: string }> = ({ site }) => {
-  const forecastData = useForecastData(site);
+  const forecastData = useForecastData({ site, hourInterval: 3 });
 
   switch (forecastData.status) {
     case 'LOADING':
@@ -13,11 +13,14 @@ export const ForecastCompact: FC<{ site: string }> = ({ site }) => {
       if (!forecastData.data.length) {
         return <div>Annetulle sijainnille ei löytynyt tietoja.</div>;
       }
-      const { info, data } = forecastData.data[0];
+      const { data } = forecastData;
       return (
         <div>
-          <h1>{info.name}</h1>
-          <p>{JSON.stringify(data, null, 2)}</p>
+          <textarea
+            className="w-100"
+            rows={15}
+            defaultValue={JSON.stringify(data, null, 2)}
+          />
         </div>
       );
     case 'ERROR':

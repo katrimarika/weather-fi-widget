@@ -1,22 +1,23 @@
 import { useEffect, useState } from 'react';
 import {
-  ForecastPropertyKey,
+  Forecast,
   getForecastData,
   getObservationData,
-  ObservationPropertyKey,
+  Observation,
   RemoteData,
 } from 'utils/fetcher';
 
-export const useForecastData = (site: string) => {
-  const [forecastData, setForecastData] = useState<
-    RemoteData<ForecastPropertyKey>
-  >({
+export const useForecastData = (params: {
+  site?: string;
+  hourInterval?: number;
+}) => {
+  const [forecastData, setForecastData] = useState<RemoteData<Forecast>>({
     status: 'LOADING',
   });
 
   useEffect(() => {
     getForecastData(
-      site,
+      params,
       data => {
         setForecastData({ status: 'SUCCESS', data });
       },
@@ -24,14 +25,14 @@ export const useForecastData = (site: string) => {
         setForecastData({ status: 'ERROR', errors });
       },
     );
-  }, [site]);
+  }, [params]);
 
   return forecastData;
 };
 
 export const useObservationData = (site: string) => {
   const [observationData, setObservationData] = useState<
-    RemoteData<ObservationPropertyKey>
+    RemoteData<Observation>
   >({
     status: 'LOADING',
   });

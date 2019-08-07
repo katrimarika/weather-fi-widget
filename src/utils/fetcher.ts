@@ -1,4 +1,5 @@
 import Metolib from '@fmidev/metolib';
+import mapValues from 'lodash.mapvalues';
 
 const API_URL = 'http://opendata.fmi.fi/wfs';
 const STORED_QUERY_OBSERVATION =
@@ -8,15 +9,19 @@ const STORED_QUERY_FORECAST =
 
 const requestParser = new Metolib.WfsRequestParser();
 
+// TODO: missing feels like and probability of rain
 const forecastProperties = [
   'temperature',
   'winddirection',
   'windspeedms',
+  'weathersymbol3',
+  'precipitation1h',
 ] as const;
+// TODO: find wanted properties
 const observationProperties = ['temperature', 'td', 'ws_10min'] as const;
 
-export type ForecastPropertyKey = typeof forecastProperties[number];
-export type ObservationPropertyKey = typeof observationProperties[number];
+export type ForecastProperties = typeof forecastProperties;
+export type ObservationProperties = typeof observationProperties;
 
 type DataProperty = {
   label: string;
@@ -32,10 +37,10 @@ type TimeValuePair = {
 };
 
 export type LocationResults<
-  K extends ForecastPropertyKey | ObservationPropertyKey
+  P extends ForecastProperties | ObservationProperties
 > = {
   data: {
-    [key in K]: {
+    [key in P[number]]: {
       property: DataProperty;
       timeValuePairs: TimeValuePair[];
     }
@@ -52,13 +57,13 @@ export type LocationResults<
   };
 };
 
-type MetolibResult<K extends ForecastPropertyKey | ObservationPropertyKey> = {
+type MetolibResult<P extends ForecastProperties | ObservationProperties> = {
   info: {
     begin: Date;
     end: Date;
   };
-  locations: Array<LocationResults<K>>;
-  properties: { [key in K]: DataProperty };
+  locations: Array<LocationResults<P>>;
+  properties: { [key in P[number]]: DataProperty };
 };
 
 type MetolibError = {
@@ -66,9 +71,17 @@ type MetolibError = {
   errorText?: string;
 };
 
-export type RemoteData<
-  K extends ForecastPropertyKey | ObservationPropertyKey
-> =
+export type Forecast = {
+  time: number;
+  values: { [key in ForecastProperties[number]]?: number };
+};
+
+export type Observation = {
+  time: number;
+  values: { [key in ObservationProperties[number]]?: number };
+};
+
+export type RemoteData<P extends Forecast | Observation> =
   | {
       status: 'LOADING';
     }
@@ -78,33 +91,66 @@ export type RemoteData<
     }
   | {
       status: 'SUCCESS';
-      data: Array<LocationResults<K>>;
+      data: P[];
     };
 
+function aggregateLocationResults<
+  P extends ForecastProperties | ObservationProperties
+>(data: Array<LocationResults<P>>) {
+  // Aggregate data into time-values pairs
+  if (data.length) {
+    const props = data[0].data;
+    const times = Object.keys(props)
+      .reduce((list: number[], k) => {
+        const vals = props[k as P[number]].timeValuePairs;
+        vals.forEach(v => {
+          if (!list.includes(v.time)) {
+            list.push(v.time);
+          }
+        });
+        return list;
+      }, [])
+      .sort();
+    const results = times.map(t => {
+      const values = mapValues(props, p => {
+        const found = p.timeValuePairs.find(v => v.time === t);
+        return found ? found.value : undefined;
+      });
+      return {
+        time: t,
+        values,
+      };
+    });
+    return results;
+  }
+  return [];
+}
+
 export const getForecastData = (
-  site: string,
-  onSuccess: (data: Array<LocationResults<ForecastPropertyKey>>) => void,
+  params: { site?: string; hourInterval?: number },
+  onSuccess: (data: Forecast[]) => void,
   onError: (errors: MetolibError[]) => void,
 ) => {
   const now = new Date();
   const begin = now;
-  const end = new Date(now.getTime() + 12 * 60 * 60 * 1000);
+  const end = new Date(now.getTime() + 15 * 60 * 60 * 1000);
   requestParser.getData({
     url: API_URL,
     storedQueryId: STORED_QUERY_FORECAST,
     requestParameter: forecastProperties,
     begin,
     end,
-    timestep: 60 * 60 * 1000,
-    sites: site, // would also accept string[]
+    timestep: (params.hourInterval || 1) * 60 * 60 * 1000,
+    sites: params.site || 'Helsinki', // would also accept string[]
     callback: (
-      data: MetolibResult<ForecastPropertyKey>,
+      data: MetolibResult<ForecastProperties>,
       errors: MetolibError[],
     ) => {
       if (errors.length) {
         onError(errors);
       } else {
-        onSuccess(data.locations);
+        const results = aggregateLocationResults(data.locations);
+        onSuccess(results);
       }
     },
   });
@@ -112,7 +158,7 @@ export const getForecastData = (
 
 export const getObservationData = (
   site: string,
-  onSuccess: (data: Array<LocationResults<ObservationPropertyKey>>) => void,
+  onSuccess: (data: Observation[]) => void,
   onError: (errors: MetolibError[]) => void,
 ) => {
   const now = new Date();
@@ -127,13 +173,14 @@ export const getObservationData = (
     timestep: 60 * 60 * 1000,
     sites: site, // would also accept string[]
     callback: (
-      data: MetolibResult<ObservationPropertyKey>,
+      data: MetolibResult<ObservationProperties>,
       errors: MetolibError[],
     ) => {
       if (errors.length) {
         onError(errors);
       } else {
-        onSuccess(data.locations);
+        const results = aggregateLocationResults(data.locations);
+        onSuccess(results);
       }
     },
   });
