@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import {
   Forecast,
   getForecastData,
@@ -14,18 +14,22 @@ export const useForecastData = (params: {
   const [forecastData, setForecastData] = useState<RemoteData<Forecast>>({
     status: 'LOADING',
   });
+  const initialMount = useRef(true);
 
   useEffect(() => {
-    getForecastData(
-      params,
-      data => {
-        setForecastData({ status: 'SUCCESS', data });
-      },
-      errors => {
-        setForecastData({ status: 'ERROR', errors });
-      },
-    );
-  }, [params]);
+    if (initialMount.current) {
+      getForecastData(
+        params,
+        data => {
+          setForecastData({ status: 'SUCCESS', data });
+        },
+        errors => {
+          setForecastData({ status: 'ERROR', errors });
+        },
+      );
+      initialMount.current = false;
+    }
+  }, [params, initialMount]);
 
   return forecastData;
 };

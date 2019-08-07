@@ -16,7 +16,7 @@ export const App: FC = () => {
             box-sizing: border-box;
           }
           html {
-            font-size: '1.57vw';
+            font-size: 5vw;
           }
           body {
             margin: 0;
