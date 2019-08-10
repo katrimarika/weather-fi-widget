@@ -1,14 +1,14 @@
 # Weather widget
 
-Widget created as a React app for showing weather by [FMI](https://ilmatieteenlaitos.fi/) in Finland.
+Widget for showing weather forecasts by [Finnish meteorological institute](https://en.ilmatieteenlaitos.fi/). Uses [MetOLib](https://github.com/fmidev/metolib) for requesting and parsing the weather data. Icons and [weather symbols](https://github.com/katrimarika/weather-icons) created by me.
 
-Built with Node 10 and Typescript.
+Built with Node 10, React and Typescript.
 
-Uses [MetOLib](https://github.com/fmidev/metolib) for requesting and parsing FMI weather data.
+## Compact forecast
 
-## Usage
+![Example](example.png)
 
-Currently only one view: compact forecast. It is designed for use in a container of an approximate ratio of 2:1 if used without the title. All sizes scale based on the container width.
+Compact forecast displays the next five forecasts. It is designed for use in a container of an approximate ratio of 2:1 (if used without the title). Text and image sizes scale based on the container width.
 
 Supported query strings:
 
