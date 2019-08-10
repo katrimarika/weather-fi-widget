@@ -9,21 +9,21 @@ export const ForecastCompact: FC<{ site: string }> = ({ site }) => {
 
   switch (forecastData.status) {
     case 'LOADING':
-      return <div>...</div>;
+      return <div className="pv2 ph3">...</div>;
     case 'SUCCESS':
       const { data } = forecastData;
       if (!data.length) {
-        return <div />;
+        return null;
       }
       return (
-        <div className="flex justify-between">
-          {data.map(d => (
+        <div className="flex justify-between pa2">
+          {data.slice(0, 5).map(d => (
             <VerticalForecastItem key={d.time} forecast={d} />
           ))}
         </div>
       );
     case 'ERROR':
-      return <div>Virhe!</div>;
+      return null;
     default:
       return null;
   }

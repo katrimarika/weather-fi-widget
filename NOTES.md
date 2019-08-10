@@ -91,7 +91,9 @@ Finnish explanations of the values of `weathersymbol3`.
 
 From: [https://ilmatieteenlaitos.fi/latauspalvelun-pikaohje](https://ilmatieteenlaitos.fi/latauspalvelun-pikaohje)
 
+Different than the symbols FMI uses in their current website and app.
+
 These could be combined with
 
-- cloudiness info to form different cloudiness combinations of the vrious rains
-- sunrise/sunset info retrieved from somewhere else to form images with sun/moon
+- cloudiness info to form different cloudiness combinations of the various rains
+- sunrise/sunset info (retrieved from somewhere else) to use different symbols for day and night
