@@ -7,7 +7,7 @@ import { singleQueryString } from 'utils/helpers';
 import { theme } from 'utils/theme';
 
 export const App: FC = () => {
-  const { noBg, site, latlon, interval } = qs.parse(window.location.search);
+  const { noBg, site, latlon, interval, withTitle } = qs.parse(window.location.search);
   let noBackground = false;
   try {
     noBackground = JSON.parse(singleQueryString(noBg) || 'false');
@@ -19,6 +19,12 @@ export const App: FC = () => {
   const hourIntervalStr = singleQueryString(interval);
   const hourIntervalInt =
     (hourIntervalStr && parseInt(hourIntervalStr, 10)) || undefined;
+  let showTitle = false;
+  try {
+    showTitle = JSON.parse(singleQueryString(withTitle) || 'false');
+  } catch (e) {
+    // no-op
+  }
 
   return (
     <Fragment>
@@ -51,6 +57,7 @@ export const App: FC = () => {
           latlon: latlonStr,
           hourInterval: hourIntervalInt,
         }}
+        showTitle={showTitle}
       />
     </Fragment>
   );

@@ -91,11 +91,13 @@ export type RemoteData<P extends Forecast | Observation> =
     }
   | {
       status: 'SUCCESS';
-      data: P[];
+      data: { title: string; data: P[] };
     };
 
 export type ForecastFetchParams = {
-  site?: string; hourInterval?: number; latlon?: string
+  site?: string;
+  hourInterval?: number;
+  latlon?: string;
 };
 
 function aggregateLocationResults<
@@ -125,14 +127,15 @@ function aggregateLocationResults<
         values,
       };
     });
-    return results;
+    const title = data[0].info.name || '';
+    return { data: results, title };
   }
-  return [];
+  return { data: [], title: '' };
 }
 
 export const getForecastData = (
   params: ForecastFetchParams,
-  onSuccess: (data: Forecast[]) => void,
+  onSuccess: (result: { data: Forecast[]; title: string }) => void,
   onError: (errors: MetolibError[]) => void,
 ) => {
   const timestep = (params.hourInterval || 3) * 60 * 60 * 1000;
@@ -164,7 +167,7 @@ export const getForecastData = (
 
 export const getObservationData = (
   site: string,
-  onSuccess: (data: Observation[]) => void,
+  onSuccess: (result: { data: Observation[]; title: string }) => void,
   onError: (errors: MetolibError[]) => void,
 ) => {
   const now = new Date();
