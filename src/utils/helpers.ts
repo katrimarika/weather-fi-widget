@@ -14,3 +14,6 @@ export const rainAmountStr = (rainAmount?: number) =>
   rainAmount !== undefined
     ? `${(Math.round(rainAmount * 10) / 10).toFixed(1).replace('.', ',')} mm`
     : '\u00a0';
+
+export const singleQueryString = (str?: string | string[] | null) =>
+  str ? (typeof str === 'string' ? str : str[0]) : undefined;

@@ -94,6 +94,10 @@ export type RemoteData<P extends Forecast | Observation> =
       data: P[];
     };
 
+export type ForecastFetchParams = {
+  site?: string; hourInterval?: number; latlon?: string
+};
+
 function aggregateLocationResults<
   P extends ForecastProperties | ObservationProperties
 >(data: Array<LocationResults<P>>) {
@@ -127,21 +131,23 @@ function aggregateLocationResults<
 }
 
 export const getForecastData = (
-  params: { site?: string; hourInterval?: number },
+  params: ForecastFetchParams,
   onSuccess: (data: Forecast[]) => void,
   onError: (errors: MetolibError[]) => void,
 ) => {
+  const timestep = (params.hourInterval || 3) * 60 * 60 * 1000;
   const now = new Date();
   const begin = now;
-  const end = new Date(now.getTime() + 15 * 60 * 60 * 1000);
+  const end = new Date(now.getTime() + timestep * 5);
   requestParser.getData({
     url: API_URL,
     storedQueryId: STORED_QUERY_FORECAST,
     requestParameter: forecastProperties,
     begin,
     end,
-    timestep: (params.hourInterval || 1) * 60 * 60 * 1000,
-    sites: params.site || 'Helsinki', // would also accept string[]
+    timestep,
+    latlon: params.latlon,
+    sites: params.latlon ? undefined : params.site || 'Helsinki', // would also accept string[]
     callback: (
       data: MetolibResult<ForecastProperties>,
       errors: MetolibError[],

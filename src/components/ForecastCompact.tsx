@@ -2,21 +2,24 @@
 import { jsx } from '@emotion/core';
 import { VerticalForecastItem } from 'components/VerticalForecastItem';
 import { FC } from 'react';
+import { ForecastFetchParams } from 'utils/fetcher';
 import { useForecastData } from 'utils/hooks';
 
-export const ForecastCompact: FC<{ site: string }> = ({ site }) => {
-  const forecastData = useForecastData({ site, hourInterval: 3 });
+export const ForecastCompact: FC<{ params: ForecastFetchParams }> = ({
+  params,
+}) => {
+  const forecastData = useForecastData(params);
 
   switch (forecastData.status) {
     case 'LOADING':
-      return <div className="pv2 ph3">...</div>;
+      return <div>...</div>;
     case 'SUCCESS':
       const { data } = forecastData;
       if (!data.length) {
         return null;
       }
       return (
-        <div className="flex justify-between pa2">
+        <div className="flex justify-between">
           {data.slice(0, 5).map(d => (
             <VerticalForecastItem key={d.time} forecast={d} />
           ))}

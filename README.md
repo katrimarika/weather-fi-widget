@@ -6,7 +6,16 @@ Built with Node 10 and Typescript.
 
 Uses [MetOLib](https://github.com/fmidev/metolib) for requesting and parsing FMI weather data.
 
-**NOTE: work in progress!**
+## Usage
+
+Currently only one view: compact forecast. It is designed for use in a container of an approximate ratio of 2:1. All sizes scale based on the container width.
+
+Supported query strings:
+
+- `noBg: boolean`, if true use transparent background
+- `site: string`, place to get forecast for, e.g. "Kamppi,Helsinki", default: "Helsinki"
+- `latlon: string`, latitude and longitude of a place separated with a comma, e.g. "60.170950,24.940755", overrides site if both given
+- `interval: number`, number of hours between each displayed forcast, default: 3
 
 ---
 

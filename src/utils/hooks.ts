@@ -1,16 +1,14 @@
 import { useEffect, useRef, useState } from 'react';
 import {
   Forecast,
+  ForecastFetchParams,
   getForecastData,
   getObservationData,
   Observation,
   RemoteData,
 } from 'utils/fetcher';
 
-export const useForecastData = (params: {
-  site?: string;
-  hourInterval?: number;
-}) => {
+export const useForecastData = (params: ForecastFetchParams) => {
   const [forecastData, setForecastData] = useState<RemoteData<Forecast>>({
     status: 'LOADING',
   });

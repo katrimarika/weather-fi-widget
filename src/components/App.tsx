@@ -1,11 +1,24 @@
 /** @jsx jsx */
 import { css, Global, jsx } from '@emotion/core';
 import { ForecastCompact } from 'components/ForecastCompact';
+import qs from 'query-string';
 import { FC, Fragment } from 'react';
+import { singleQueryString } from 'utils/helpers';
 import { theme } from 'utils/theme';
 
 export const App: FC = () => {
-  const noBackground = window.location.search.includes('noBg');
+  const { noBg, site, latlon, interval } = qs.parse(window.location.search);
+  let noBackground = false;
+  try {
+    noBackground = JSON.parse(singleQueryString(noBg) || 'false');
+  } catch (e) {
+    // no-op
+  }
+  const latlonStr = singleQueryString(latlon);
+  const siteStr = singleQueryString(site);
+  const hourIntervalStr = singleQueryString(interval);
+  const hourIntervalInt =
+    (hourIntervalStr && parseInt(hourIntervalStr, 10)) || undefined;
 
   return (
     <Fragment>
@@ -32,7 +45,13 @@ export const App: FC = () => {
           }
         `}
       />
-      <ForecastCompact site="Helsinki" />
+      <ForecastCompact
+        params={{
+          site: siteStr,
+          latlon: latlonStr,
+          hourInterval: hourIntervalInt,
+        }}
+      />
     </Fragment>
   );
 };
