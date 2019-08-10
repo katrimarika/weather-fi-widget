@@ -2,12 +2,14 @@
 import { css, Global, jsx } from '@emotion/core';
 import { ForecastCompact } from 'components/ForecastCompact';
 import qs from 'query-string';
-import { FC, Fragment } from 'react';
+import { FC } from 'react';
 import { singleQueryString } from 'utils/helpers';
 import { theme } from 'utils/theme';
 
 export const App: FC = () => {
-  const { noBg, site, latlon, interval, withTitle } = qs.parse(window.location.search);
+  const { noBg, site, latlon, interval, withTitle } = qs.parse(
+    window.location.search,
+  );
   let noBackground = false;
   try {
     noBackground = JSON.parse(singleQueryString(noBg) || 'false');
@@ -27,7 +29,7 @@ export const App: FC = () => {
   }
 
   return (
-    <Fragment>
+    <div className="vh-100 flex flex-column justify-between">
       <Global
         styles={css`
           @import url('https://fonts.googleapis.com/css?family=Roboto:400,700');
@@ -59,6 +61,14 @@ export const App: FC = () => {
         }}
         showTitle={showTitle}
       />
-    </Fragment>
+      <div
+        className="mt2"
+        css={css`
+          font-size: 0.5rem;
+        `}
+      >
+        ©&nbsp;Ilmatieteen laitos
+      </div>
+    </div>
   );
 };
