@@ -15,3 +15,16 @@ export const rainAmountStr = (rainAmount?: number) =>
 
 export const singleQueryString = (str?: string | string[] | null) =>
   str ? (typeof str === 'string' ? str : str[0]) : undefined;
+
+export const queryStringBoolean = (str?: string | string[] | null) => {
+  try {
+    return JSON.parse(singleQueryString(str) || 'false');
+  } catch (e) {
+    return false;
+  }
+};
+
+export const queryStringInt = (str?: string | string[] | null) => {
+  const parsedStr = singleQueryString(str);
+  return (parsedStr && Math.max(parseInt(parsedStr, 10), 0)) || undefined;
+};

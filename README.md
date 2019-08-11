@@ -8,7 +8,7 @@ Built with Node 10, React and Typescript.
 
 ![Example](compact_forecast.png)
 
-Compact forecast displays the next five forecasts: time, sybmol, temperature in °C, wind direction and speed in m/s, and amount of rain per hour in mm. It is designed for use in a container of an approximate ratio of 2:1 (if used without the title). Text and image sizes scale based on the container width.
+Compact forecast displays the next five forecasts: time, sybmol, temperature in °C, wind direction and speed in m/s, and amount of rain in mm/h. It is designed for use in a container of an approximate ratio of 2:1 (if used without the title). Text and image sizes scale based on the container width.
 
 Supported query strings:
 
@@ -17,6 +17,15 @@ Supported query strings:
 - `latlon: string`, latitude and longitude of a place separated with a comma, e.g. "60.170950,24.940755", overrides site if both given
 - `interval: number`, number of hours between each displayed forcast, default: 3
 - `title: boolean`, if true show the returned place text, use e.g. to check that the place is correct
+
+## Forecast list
+
+![Example](forecast_list.png)
+
+Forecast list displays a scrollable list of horizontal forecasts. Similar to the compact forecast, with the additional query strings:
+
+- `list: boolean`, if true use forecast list instead of compact
+- `count: number`, number of forecast items to fetch, default: 5, max: 24
 
 ---
 

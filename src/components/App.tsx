@@ -1,32 +1,28 @@
 /** @jsx jsx */
 import { css, Global, jsx } from '@emotion/core';
 import { ForecastCompact } from 'components/ForecastCompact';
+import { ForecastDisplay } from 'components/ForecastDisplay';
+import { ForecastList } from 'components/ForecastList';
 import qs from 'query-string';
 import { FC, Fragment } from 'react';
-import { singleQueryString } from 'utils/helpers';
+import {
+  queryStringBoolean,
+  queryStringInt,
+  singleQueryString,
+} from 'utils/helpers';
 import { theme } from 'utils/theme';
 
 export const App: FC = () => {
-  const { nobg, site, latlon, interval, title } = qs.parse(
+  const { nobg, site, latlon, interval, title, list, count } = qs.parse(
     window.location.search,
   );
-  let noBackground = false;
-  try {
-    noBackground = JSON.parse(singleQueryString(nobg) || 'false');
-  } catch (e) {
-    // no-op
-  }
+  const noBackground = queryStringBoolean(nobg);
   const latlonStr = singleQueryString(latlon);
   const siteStr = singleQueryString(site);
-  const hourIntervalStr = singleQueryString(interval);
-  const hourIntervalInt =
-    (hourIntervalStr && parseInt(hourIntervalStr, 10)) || undefined;
-  let showTitle = false;
-  try {
-    showTitle = JSON.parse(singleQueryString(title) || 'false');
-  } catch (e) {
-    // no-op
-  }
+  const hourIntervalInt = queryStringInt(interval);
+  const showTitle = queryStringBoolean(title);
+  const asList = queryStringBoolean(list);
+  const numResults = queryStringInt(count);
 
   return (
     <Fragment>
@@ -37,7 +33,7 @@ export const App: FC = () => {
             box-sizing: border-box;
           }
           html {
-            font-size: 5vw;
+            font-size: ${asList ? 7.25 : 5}vw;
           }
           body {
             margin: 0;
@@ -53,13 +49,16 @@ export const App: FC = () => {
           }
         `}
       />
-      <ForecastCompact
+      <ForecastDisplay
         params={{
           site: siteStr,
           latlon: latlonStr,
           hourInterval: hourIntervalInt,
+          numResults:
+            asList && numResults ? Math.min(numResults, 24) : undefined,
         }}
         showTitle={showTitle}
+        component={asList ? ForecastList : ForecastCompact}
       />
     </Fragment>
   );

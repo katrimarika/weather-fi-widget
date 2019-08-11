@@ -98,11 +98,12 @@ export type ForecastFetchParams = {
   site?: string;
   hourInterval?: number;
   latlon?: string;
+  numResults?: number;
 };
 
 function aggregateLocationResults<
   P extends ForecastProperties | ObservationProperties
->(data: Array<LocationResults<P>>) {
+>(data: Array<LocationResults<P>>, maxCount: number) {
   // Aggregate data into time-values pairs
   if (data.length) {
     const props = data[0].data;
@@ -128,7 +129,7 @@ function aggregateLocationResults<
       };
     });
     const title = data[0].info.name || '';
-    return { data: results, title };
+    return { data: results.slice(0, maxCount), title };
   }
   return { data: [], title: '' };
 }
@@ -138,11 +139,13 @@ export const getForecastData = (
   onSuccess: (result: { data: Forecast[]; title: string }) => void,
   onError: (errors: MetolibError[]) => void,
 ) => {
-  const timestep = (params.hourInterval || 3) * 60 * 60 * 1000;
+  const { hourInterval, numResults, latlon, site } = params;
+  const timestep = (hourInterval || 3) * 60 * 60 * 1000;
+  const maxCount = numResults || 5;
   const now = new Date();
   // Next full hour
   const begin = new Date(now.setHours(now.getHours() + 1, 0, 0, 0));
-  const end = new Date(begin.getTime() + timestep * 5);
+  const end = new Date(begin.getTime() + timestep * maxCount);
   requestParser.getData({
     url: API_URL,
     storedQueryId: STORED_QUERY_FORECAST,
@@ -150,8 +153,8 @@ export const getForecastData = (
     begin,
     end,
     timestep,
-    latlon: params.latlon,
-    sites: params.latlon ? undefined : params.site || 'Helsinki', // would also accept string[]
+    latlon,
+    sites: latlon ? undefined : site || 'Helsinki', // would also accept string[]
     callback: (
       data: MetolibResult<ForecastProperties>,
       errors: MetolibError[],
@@ -159,7 +162,7 @@ export const getForecastData = (
       if (errors.length) {
         onError(errors);
       } else {
-        const results = aggregateLocationResults(data.locations);
+        const results = aggregateLocationResults(data.locations, maxCount);
         onSuccess(results);
       }
     },
@@ -189,7 +192,7 @@ export const getObservationData = (
       if (errors.length) {
         onError(errors);
       } else {
-        const results = aggregateLocationResults(data.locations);
+        const results = aggregateLocationResults(data.locations, 1);
         onSuccess(results);
       }
     },

@@ -1,27 +1,18 @@
 /** @jsx jsx */
-import { css, jsx } from '@emotion/core';
+import { jsx } from '@emotion/core';
+import { WeatherSymbol } from 'components/WeatherSymbol';
 import { WindSymbol } from 'components/WindSymbol';
 import { FC } from 'react';
 import { Forecast } from 'utils/fetcher';
 import { hourStr, rainAmountStr, temperatureStr } from 'utils/helpers';
-import { getWeatherSymbol } from 'utils/symbols';
 
 export const VerticalForecastItem: FC<{ forecast: Forecast }> = ({
   forecast: { time, values },
 }) => (
   <div className="flex flex-column items-center">
     <div className="fw7 mb1">{hourStr(time)}</div>
-    <img
-      className="flex-shrink-0 mb1"
-      css={css`
-        width: 2.75rem;
-        height: 2.75rem;
-      `}
-      src={getWeatherSymbol(values.weathersymbol3)}
-      alt={`${values.weathersymbol3 || ''}`}
-      title={`${values.weathersymbol3 || ''}`}
-    />
-    <div className="f4 mb1">{temperatureStr(values.temperature)}</div>
+    <WeatherSymbol symbol3={values.weathersymbol3} />
+    <div className="f4 mv1">{temperatureStr(values.temperature)}</div>
     <WindSymbol
       windspeedms={values.windspeedms}
       winddirection={values.winddirection}
