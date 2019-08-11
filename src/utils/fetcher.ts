@@ -15,7 +15,7 @@ const forecastProperties = [
   'winddirection',
   'windspeedms',
   'weathersymbol3',
-  'precipitationAmount',
+  'precipitation1h',
 ] as const;
 // TODO: find wanted properties
 const observationProperties = ['temperature', 'td', 'ws_10min'] as const;

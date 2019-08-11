@@ -8,7 +8,7 @@ Built with Node 10, React and Typescript.
 
 ![Example](compact_forecast.png)
 
-Compact forecast displays the next five forecasts: time, sybmol, temperature in °C, wind direction and speed in m/s, and total amount of rain during the given interval in mm. It is designed for use in a container of an approximate ratio of 2:1 (if used without the title). Text and image sizes scale based on the container width.
+Compact forecast displays the next five forecasts: time, sybmol, temperature in °C, wind direction and speed in m/s, and amount of rain per hour in mm. It is designed for use in a container of an approximate ratio of 2:1 (if used without the title). Text and image sizes scale based on the container width.
 
 Supported query strings:
 

@@ -26,6 +26,6 @@ export const VerticalForecastItem: FC<{ forecast: Forecast }> = ({
       windspeedms={values.windspeedms}
       winddirection={values.winddirection}
     />
-    <div className="f7 mt1">{rainAmountStr(values.precipitationAmount)}</div>
+    <div className="f7 mt1">{rainAmountStr(values.precipitation1h)}</div>
   </div>
 );
