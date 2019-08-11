@@ -1,6 +1,6 @@
 /** @jsx jsx */
-import { css, jsx } from '@emotion/core';
-import { FC, Fragment } from 'react';
+import { jsx } from '@emotion/core';
+import { FC } from 'react';
 import { ObservationProperties } from 'utils/fetcher';
 import { rounded0Str, rounded1Str } from 'utils/helpers';
 

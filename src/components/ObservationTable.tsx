@@ -1,5 +1,5 @@
 /** @jsx jsx */
-import { css, jsx } from '@emotion/core';
+import { jsx } from '@emotion/core';
 import { ObservationRow } from 'components/ObservationRow';
 import { FC } from 'react';
 import { Observation } from 'utils/fetcher';
