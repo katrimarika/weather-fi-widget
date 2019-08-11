@@ -18,7 +18,21 @@ const forecastProperties = [
   'precipitation1h',
 ] as const;
 // TODO: find wanted properties
-const observationProperties = ['temperature', 'td', 'ws_10min'] as const;
+const observationProperties = [
+  't2m', // temperature (degC)
+  'ws_10min', // wind speed (m/s)
+  'wg_10min', // wind gust speed (m/s)
+  'wd_10min', // wind direction (deg)
+  'rh', // relative humidity (%)
+  'td', // dew-point temperature (degC)
+  'r_1h', // rain amount in 1 hour (mm)
+  'ri_10min', // rain intensity (mm/h)
+  'snow_aws', // snow depth (cm)
+  'p_sea', // air pressure (hPa)
+  'vis', // visibility (m)
+  'n_man', // cloud amount int 0-9/8
+  'wawa', // weather symbol 3?
+] as const;
 
 export type ForecastProperties = typeof forecastProperties;
 export type ObservationProperties = typeof observationProperties;
@@ -101,6 +115,11 @@ export type ForecastFetchParams = {
   numResults?: number;
 };
 
+export type ObservationFetchParams = {
+  site?: string;
+  latlon?: string;
+};
+
 function aggregateLocationResults<
   P extends ForecastProperties | ObservationProperties
 >(data: Array<LocationResults<P>>, maxCount: number) {
@@ -170,21 +189,21 @@ export const getForecastData = (
 };
 
 export const getObservationData = (
-  site: string,
+  params: ObservationFetchParams,
   onSuccess: (result: { data: Observation[]; title: string }) => void,
   onError: (errors: MetolibError[]) => void,
 ) => {
+  const { latlon, site } = params;
   const now = new Date();
-  const begin = new Date(now.setHours(now.getHours() - 1));
-  const end = new Date(now);
   requestParser.getData({
     url: API_URL,
     storedQueryId: STORED_QUERY_OBSERVATION,
     requestParameter: observationProperties,
-    begin,
-    end,
+    begin: now,
+    end: now,
     timestep: 60 * 60 * 1000,
-    sites: site, // would also accept string[]
+    latlon,
+    sites: latlon ? undefined : site || 'Helsinki', // would also accept string[]
     callback: (
       data: MetolibResult<ObservationProperties>,
       errors: MetolibError[],

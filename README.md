@@ -27,6 +27,21 @@ Forecast list displays a scrollable list of horizontal forecasts. Similar to the
 - `list: boolean`, if true use forecast list instead of compact
 - `count: number`, number of forecast items to fetch, default: 5, max: 24
 
+## Observation
+
+![Example](observation.png)
+
+Observation returns the nearest (land) observation values for given place.
+
+Supported query strings:
+
+- `observation: boolean`, if true use observation instead of forecast
+- `nobg: boolean`, if true use transparent background
+- `site: string`, place to get forecast for, e.g. "Kamppi,Helsinki", default: "Helsinki"
+- `latlon: string`, latitude and longitude of a place separated with a comma, e.g. "60.170950,24.940755", overrides site if both given
+- `title: boolean`, if true show the returned observation station place and recorded time of observation
+- `lang: string`, "fi" or "en" for language of observation value names, default: fi
+
 ---
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).

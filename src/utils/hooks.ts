@@ -5,6 +5,7 @@ import {
   getForecastData,
   getObservationData,
   Observation,
+  ObservationFetchParams,
   RemoteData,
 } from 'utils/fetcher';
 
@@ -16,6 +17,7 @@ export const useForecastData = (params: ForecastFetchParams) => {
 
   useEffect(() => {
     if (initialMount.current) {
+      initialMount.current = false;
       getForecastData(
         params,
         data => {
@@ -25,31 +27,34 @@ export const useForecastData = (params: ForecastFetchParams) => {
           setForecastData({ status: 'ERROR', errors });
         },
       );
-      initialMount.current = false;
     }
   }, [params, initialMount]);
 
   return forecastData;
 };
 
-export const useObservationData = (site: string) => {
+export const useObservationData = (params: ObservationFetchParams) => {
   const [observationData, setObservationData] = useState<
     RemoteData<Observation>
   >({
     status: 'LOADING',
   });
+  const initialMount = useRef(true);
 
   useEffect(() => {
-    getObservationData(
-      site,
-      data => {
-        setObservationData({ status: 'SUCCESS', data });
-      },
-      errors => {
-        setObservationData({ status: 'ERROR', errors });
-      },
-    );
-  }, [site]);
+    if (initialMount.current) {
+      initialMount.current = false;
+      getObservationData(
+        params,
+        data => {
+          setObservationData({ status: 'SUCCESS', data });
+        },
+        errors => {
+          setObservationData({ status: 'ERROR', errors });
+        },
+      );
+    }
+  }, [params, initialMount]);
 
   return observationData;
 };

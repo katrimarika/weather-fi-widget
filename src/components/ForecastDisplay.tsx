@@ -28,7 +28,7 @@ export const ForecastDisplay: FC<{
         );
       }
       return (
-        <div className="vh-100 flex flex-column justify-between">
+        <div className="vh-100 flex flex-column">
           {showTitle && <Title title={title} />}
           <Component forecasts={forecasts} />
           <Copyright />

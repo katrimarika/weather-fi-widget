@@ -4,8 +4,9 @@ import { FC } from 'react';
 
 export const Copyright: FC = () => (
   <a
-    className="mt2 self-start color-inherit link hover-gray"
+    className="pt2 self-start color-inherit link hover-gray"
     css={css`
+      margin-top: auto;
       font-size: 0.5rem;
     `}
     href="https://en.ilmatieteenlaitos.fi/open-data-licence"
