@@ -140,8 +140,9 @@ export const getForecastData = (
 ) => {
   const timestep = (params.hourInterval || 3) * 60 * 60 * 1000;
   const now = new Date();
-  const begin = now;
-  const end = new Date(now.getTime() + timestep * 5);
+  // Next full hour
+  const begin = new Date(now.setHours(now.getHours() + 1, 0, 0, 0));
+  const end = new Date(begin.getTime() + timestep * 5);
   requestParser.getData({
     url: API_URL,
     storedQueryId: STORED_QUERY_FORECAST,

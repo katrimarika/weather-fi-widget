@@ -2,17 +2,17 @@
 import { css, Global, jsx } from '@emotion/core';
 import { ForecastCompact } from 'components/ForecastCompact';
 import qs from 'query-string';
-import { FC } from 'react';
+import { FC, Fragment } from 'react';
 import { singleQueryString } from 'utils/helpers';
 import { theme } from 'utils/theme';
 
 export const App: FC = () => {
-  const { noBg, site, latlon, interval, withTitle } = qs.parse(
+  const { nobg, site, latlon, interval, title } = qs.parse(
     window.location.search,
   );
   let noBackground = false;
   try {
-    noBackground = JSON.parse(singleQueryString(noBg) || 'false');
+    noBackground = JSON.parse(singleQueryString(nobg) || 'false');
   } catch (e) {
     // no-op
   }
@@ -23,13 +23,13 @@ export const App: FC = () => {
     (hourIntervalStr && parseInt(hourIntervalStr, 10)) || undefined;
   let showTitle = false;
   try {
-    showTitle = JSON.parse(singleQueryString(withTitle) || 'false');
+    showTitle = JSON.parse(singleQueryString(title) || 'false');
   } catch (e) {
     // no-op
   }
 
   return (
-    <div className="vh-100 flex flex-column justify-between">
+    <Fragment>
       <Global
         styles={css`
           @import url('https://fonts.googleapis.com/css?family=Roboto:400,700');
@@ -61,17 +61,6 @@ export const App: FC = () => {
         }}
         showTitle={showTitle}
       />
-      <a
-        className="mt2 self-start color-inherit link hover-gray"
-        css={css`
-          font-size: 0.5rem;
-        `}
-        href="https://en.ilmatieteenlaitos.fi/open-data-licence"
-        target="_blank"
-        rel="noreferrer noopener"
-      >
-        ©&nbsp;Ilmatieteen laitos
-      </a>
-    </div>
+    </Fragment>
   );
 };

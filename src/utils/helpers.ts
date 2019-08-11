@@ -6,9 +6,7 @@ export const hourStr = (time: number) => {
 };
 
 export const temperatureStr = (temperature?: number) =>
-  temperature !== undefined
-    ? `${temperature > 0 ? '+' : ''}${Math.round(temperature)} °`
-    : '\u00a0';
+  temperature !== undefined ? `${Math.round(temperature)}°` : '\u00a0';
 
 export const rainAmountStr = (rainAmount?: number) =>
   rainAmount !== undefined

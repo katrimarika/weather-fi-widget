@@ -30,7 +30,11 @@ const daySymbolMap = {
 
 export const getWeatherSymbol = (symbol3?: number): string => {
   if (!symbol3 || !(symbol3 in daySymbolMap)) return '';
-  return require(`assets/weather-symbols/${
-    daySymbolMap[symbol3 as keyof typeof daySymbolMap]
-  }.svg`);
+  try {
+    return require(`assets/weather-symbols/${
+      daySymbolMap[symbol3 as keyof typeof daySymbolMap]
+    }.svg`);
+  } catch (e) {
+    return '';
+  }
 };

@@ -18,7 +18,8 @@ export const VerticalForecastItem: FC<{ forecast: Forecast }> = ({
         height: 2.75rem;
       `}
       src={getWeatherSymbol(values.weathersymbol3)}
-      alt=""
+      alt={`${values.weathersymbol3 || ''}`}
+      title={`${values.weathersymbol3 || ''}`}
     />
     <div className="f4 mb1">{temperatureStr(values.temperature)}</div>
     <WindSymbol
