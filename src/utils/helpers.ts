@@ -32,3 +32,10 @@ export const queryStringInt = (str?: string | string[] | null) => {
   const parsedStr = singleQueryString(str);
   return (parsedStr && Math.max(parseInt(parsedStr, 10), 0)) || undefined;
 };
+
+export const queryStringNumber = (str?: string | string[] | null) => {
+  const parsedStr = singleQueryString(str);
+  if (!parsedStr) return undefined;
+  const parsedNum = parseFloat(parsedStr);
+  return Number.isFinite(parsedNum) ? parsedNum : undefined;
+};

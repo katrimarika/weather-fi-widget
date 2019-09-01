@@ -17,6 +17,8 @@ Supported query strings:
 - `latlon: string`, latitude and longitude of a place separated with a comma, e.g. "60.170950,24.940755", overrides site if both given
 - `interval: number`, number of hours between each displayed forcast, default: 3
 - `title: boolean`, if true show the returned place text, use e.g. to check that the place is correct
+- `fontsize: number`, if provided, overrides the default font size (unit is `vw`)
+- `padding: number`, if provided, adds extra padding around the container (unit is `px`)
 
 ## Forecast list
 
@@ -41,6 +43,8 @@ Supported query strings:
 - `latlon: string`, latitude and longitude of a place separated with a comma, e.g. "60.170950,24.940755", overrides site if both given
 - `title: boolean`, if true show the returned observation station place and recorded time of observation
 - `lang: string`, "fi" or "en" for language of observation value names, default: fi
+- `fontsize: number`, if provided, overrides the default font size (unit is `vw`)
+- `padding: number`, if provided, adds extra padding around the container (unit is `px`)
 
 ---
 

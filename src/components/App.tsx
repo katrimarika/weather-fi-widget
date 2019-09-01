@@ -9,6 +9,7 @@ import { FC, Fragment } from 'react';
 import {
   queryStringBoolean,
   queryStringInt,
+  queryStringNumber,
   singleQueryString,
 } from 'utils/helpers';
 import { theme } from 'utils/theme';
@@ -24,6 +25,8 @@ export const App: FC = () => {
     count,
     observation,
     lang,
+    fontsize,
+    padding,
   } = qs.parse(window.location.search);
   const noBackground = queryStringBoolean(nobg);
   const latlonStr = singleQueryString(latlon);
@@ -34,10 +37,14 @@ export const App: FC = () => {
   const numResults = queryStringInt(count);
   const showObservation = queryStringBoolean(observation);
   const parsedLang = singleQueryString(lang);
+  const fontSizeOverride = queryStringNumber(fontsize);
+  const extraPadding = queryStringNumber(padding);
   const language =
     parsedLang && (parsedLang === 'fi' || parsedLang === 'en')
       ? parsedLang
       : 'fi';
+  const rootFontSize =
+    fontSizeOverride || (showObservation ? 6.5 : asList ? 7.25 : 5);
 
   return (
     <Fragment>
@@ -48,7 +55,7 @@ export const App: FC = () => {
             box-sizing: border-box;
           }
           html {
-            font-size: ${showObservation ? 6.5 : asList ? 7.25 : 5}vw;
+            font-size: ${rootFontSize}vw;
           }
           body {
             margin: 0;
@@ -61,6 +68,7 @@ export const App: FC = () => {
             color: ${theme.colors.white};
             font-family: ${theme.fonts.body};
             position: relative;
+            padding: ${extraPadding || 0}px;
           }
         `}
       />
