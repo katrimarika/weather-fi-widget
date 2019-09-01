@@ -1,7 +1,7 @@
 import Metolib from '@fmidev/metolib';
 import mapValues from 'lodash.mapvalues';
 
-const API_URL = 'http://opendata.fmi.fi/wfs';
+const API_URL = '//opendata.fmi.fi/wfs';
 const STORED_QUERY_OBSERVATION =
   'fmi::observations::weather::multipointcoverage';
 const STORED_QUERY_FORECAST =
