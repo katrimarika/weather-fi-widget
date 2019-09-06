@@ -13,6 +13,6 @@ export const Copyright: FC = () => (
     target="_blank"
     rel="noreferrer noopener"
   >
-    ©&nbsp;Ilmatieteen laitos
+    Data ©&nbsp;Ilmatieteen laitos
   </a>
 );
