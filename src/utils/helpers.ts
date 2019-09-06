@@ -4,7 +4,8 @@ export const hourStr = (time: number) => {
   const date = new Date(time);
   if (isNaN(date.getTime())) return '';
   const hours = date.getHours();
-  return leading0(hours);
+  const minutes = date.getMinutes();
+  return `${leading0(hours)}:${leading0(minutes)}`;
 };
 
 export const rounded0Str = (val: number) => `${Math.round(val)}`;

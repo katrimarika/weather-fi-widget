@@ -44,7 +44,7 @@ export const App: FC = () => {
       ? parsedLang
       : 'fi';
   const rootFontSize =
-    fontSizeOverride || (showObservation ? 6.5 : asList ? 7.25 : 5);
+    fontSizeOverride || (showObservation ? 6.5 : asList ? 7 : 5);
 
   return (
     <Fragment>

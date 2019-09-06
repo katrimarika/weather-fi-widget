@@ -10,9 +10,9 @@ export const VerticalForecastItem: FC<{ forecast: Forecast }> = ({
   forecast: { time, values },
 }) => (
   <div className="flex flex-column items-center">
-    <div className="fw7 mb1">{hourStr(time)}</div>
+    <div className="f6 lh-title mb1">{hourStr(time)}</div>
     <WeatherSymbol symbol3={values.weathersymbol3} />
-    <div className="f4 mv1">{temperatureStr(values.temperature)}</div>
+    <div className="f4 fw7 mv1">{temperatureStr(values.temperature)}</div>
     <WindSymbol
       windspeedms={values.windspeedms}
       winddirection={values.winddirection}

@@ -12,7 +12,7 @@ export const ForecastListItem: FC<{ forecast: Forecast }> = ({
 }) => (
   <Fragment>
     <div
-      className="fw7"
+      className="f6"
       css={css`
         justify-self: start;
       `}
@@ -20,7 +20,7 @@ export const ForecastListItem: FC<{ forecast: Forecast }> = ({
       {hourStr(time)}
     </div>
     <WeatherSymbol symbol3={values.weathersymbol3} />
-    <div className="f4">{temperatureStr(values.temperature)}</div>
+    <div className="f4 fw7">{temperatureStr(values.temperature)}</div>
     <div>
       <WindSymbol
         windspeedms={values.windspeedms}
